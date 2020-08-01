@@ -1,11 +1,11 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
-import EmployeeTable from './components/EmployeeTable';
+import EmployeePage from './components/EmployeePage';
 
 function App() {
   return (
-    <EmployeeTable></EmployeeTable>
+    <EmployeePage></EmployeePage>
   );
 }
 
