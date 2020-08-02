@@ -151,8 +151,9 @@ class EmployeePage extends React.Component {
 
     return (
       <div>
+        <h1>Employee Directory</h1>
         <TableSortSelect setSortBy={this.setSortBy}></TableSortSelect>
-        <TableFilter
+        <TableFilter className="filter-padding"
           updatePositionFilters={this.updatePositionFilters}
           values={this.originalEmployees.map((employee) => {
             return employee.position

@@ -6,7 +6,7 @@ function TableFilter(props) {
   
 
   return (
-    <div>
+    <div className="filter-padding">
       <span>Filter by position:</span>
       {props.values.map((position) => {
         return (
