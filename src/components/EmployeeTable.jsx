@@ -25,6 +25,7 @@ class EmployeeTable extends React.Component {
                 <td>{employee.name}</td>
                 <td>{employee.location}</td>
                 <td>{employee.phoneNumber}</td>
+                <td>{employee.position}</td>
               </tr>
             );
           })}

@@ -1,19 +1,24 @@
 import React from 'react';
 import EmployeTable from './EmployeeTable';
 import TableSortSelect from './TableSortSelect';
+import TableFilter from "./TableFilter"
 
 class EmployeePage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       employees: [],
+      positionFilters: [],
+      sortBy: 'id',
     };
     this.headerNames = [
       'Employee ID',
       'Employee Name',
       'Employee Location',
-      'Employee Phone Number'
+      'Employee Phone Number',
+      'Employee Position'
     ];
+    this.originalEmployees = [];
   }
 
   componentDidMount(){
@@ -83,7 +88,9 @@ class EmployeePage extends React.Component {
       }
     ];
 
-    this.sortBy("id", employeesFromAPI)
+    this.originalEmployees= employeesFromAPI
+
+    this.sortBy(this.state.sortBy, employeesFromAPI)
   }
 
   sortBy = (sortBy, employeeSort) => {
@@ -110,20 +117,50 @@ class EmployeePage extends React.Component {
     }
   }
 
-  setSortFilter = (event) => {
+  setSortBy = (event) => {
     const sortBy = event.target.value
+    this.setState({sortBy: sortBy})
     let employeeSort = this.state.employees
     this.sortBy(sortBy, employeeSort)
     // console.log(event.target.value)
     //value of what u selected
   }
+
+  updatePositionFilters = (event) => {
+    let listOfChecked = this.state.positionFilters
+    if (event.target.checked) {
+      listOfChecked.push(event.target.value);
+    } else {
+      let index = listOfChecked.indexOf(event.target.value)
+      listOfChecked.splice(index,1)
+    }
+    let filteredEmployees = this.originalEmployees.filter((employee)=>{
+      return listOfChecked.includes(employee.position.toLowerCase())
+    })
+    console.log(filteredEmployees)
+    this.setState({
+      positionFilters:listOfChecked
+    })
+    this.sortBy(this.state.sortBy, filteredEmployees)
+
+  }
+
  
   render() {
     const { employees } = this.state
 
     return (
       <div>
-        <TableSortSelect setSortFilter={this.setSortFilter}></TableSortSelect>
+        <TableSortSelect setSortBy={this.setSortBy}></TableSortSelect>
+        <TableFilter
+          updatePositionFilters={this.updatePositionFilters}
+          values={this.originalEmployees.map((employee) => {
+            return employee.position
+          }).filter((value, index, array)=>{
+            return array.indexOf(value) === index;
+          })}
+        >
+        </TableFilter>
         <EmployeTable employees={employees} headerNames={this.headerNames}></EmployeTable>
       </div>
     );
